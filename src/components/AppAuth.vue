@@ -162,7 +162,7 @@ import { ref } from 'vue'
 
 const modalStore = useModalStore()
 const tab = ref('login')
-console.log(tab.value)
+
 function closeModalByEsc(event) {
   if (event.key === 'Escape') {
     modalStore.isOpen = false
