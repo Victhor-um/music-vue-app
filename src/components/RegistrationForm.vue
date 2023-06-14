@@ -108,7 +108,9 @@
 <script setup>
 import { ref } from 'vue'
 import { ErrorMessage } from 'vee-validate'
-import { auth, usersCollection } from '@/includes/firebase'
+import useUserStore from '@/stores/user'
+
+const userStore = useUserStore()
 
 const schema = {
   name: 'required|min:3|max:100|alpha_spaces',
@@ -134,27 +136,14 @@ async function register(values) {
   regInSubmission.value = true
   console.log(regShowAlert.value)
 
-  let userCred
   try {
-    userCred = await auth.createUserWithEmailAndPassword(values.email, values.password)
+    userStore.register(values)
   } catch (error) {
-    regInSubmission.value = false
     regAlertVariant.value = 'bg-red-500'
     regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
     return
-  }
-  try {
-    await usersCollection.add({
-      name: values.name,
-      email: values.email,
-      age: values.age,
-      country: values.country
-    })
-  } catch (error) {
+  } finally {
     regInSubmission.value = false
-    regAlertVariant.value = 'bg-red-500'
-    regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
-    return
   }
 
   regAlertVariant.value = 'bg-green-500'
