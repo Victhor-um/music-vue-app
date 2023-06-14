@@ -108,6 +108,7 @@
 <script setup>
 import { ref } from 'vue'
 import { ErrorMessage } from 'vee-validate'
+import firebase from '@/includes/firebase'
 
 const schema = {
   name: 'required|min:3|max:100|alpha_spaces',
@@ -133,9 +134,19 @@ async function register(values) {
   regInSubmission.value = true
   console.log(regShowAlert.value)
 
+  let userCred
+  try {
+    userCred = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
+  } catch (error) {
+    regInSubmission.value = false
+    regAlertVariant.value = 'bg-red-500'
+    regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
+    return
+  }
+
   regAlertVariant.value = 'bg-green-500'
   regAlertMsg.value = 'Success! Your account has been created.'
-  console.log(values)
+  console.log(userCred)
 }
 </script>
 
