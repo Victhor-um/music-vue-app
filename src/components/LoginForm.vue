@@ -45,7 +45,7 @@ import { ref } from 'vue'
 const loginInSubmission = ref(false)
 const loginShowAlert = ref(false)
 const loginAlertVariant = ref('bg-blue-500')
-const loginAlertMsg = ref('Please wait! We are loggin you in.')
+const loginAlertMsg = ref('Please wait! We are logged you in.')
 
 import { ErrorMessage } from 'vee-validate'
 
