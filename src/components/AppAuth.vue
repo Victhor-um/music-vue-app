@@ -81,6 +81,13 @@
             </button>
           </form>
           <!-- Registration Form -->
+          <div
+            class="text-white text-center font-bold p-4 rounded mb-4"
+            v-if="regShowAlert"
+            :class="regAlertVariant"
+          >
+            {{ regAlertMsg }}
+          </div>
           <vee-form
             v-show="tab === 'register'"
             :validation-schema="schema"
@@ -135,7 +142,6 @@
                   {{ error }}
                 </div>
               </vee-field>
-              <ErrorMessage class="text-red-600" name="password" />
             </div>
             <!-- Confirm Password -->
             <div class="mb-3">
@@ -179,6 +185,7 @@
             <button
               type="submit"
               class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
+              :disabled="regInSubmission"
             >
               Submit
             </button>
@@ -212,12 +219,23 @@ const userData = {
   country: 'USA'
 }
 
+const regInSubmission = ref(false)
+const regShowAlert = ref(false)
+const regAlertVariant = ref('bg-blue-500')
+const regAlertMsg = ref('Please wait! Your account is being created.')
+
 function closeModalByEsc(event) {
   if (event.key === 'Escape') {
     modalStore.isOpen = false
   }
 }
-function register(values) {
+async function register(values) {
+  regShowAlert.value = true
+  regInSubmission.value = true
+  console.log(regShowAlert.value)
+
+  regAlertVariant.value = 'bg-green-500'
+  regAlertMsg.value = 'Success! Your account has been created.'
   console.log(values)
 }
 onMounted(() => {
