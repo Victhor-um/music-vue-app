@@ -271,6 +271,17 @@
 <script setup>
 import AppHeader from './components/AppHeader.vue'
 import AppAuth from './components/AppAuth.vue'
+import useUserStore from '@/stores/user'
+import { auth } from '@/includes/firebase'
+import { onMounted } from 'vue'
+
+function created() {
+  if (auth.currentUser) {
+    const userStore = useUserStore()
+    userStore.setUserLoggedIn(true)
+  }
+}
+onMounted(created)
 </script>
 
 <style lang="scss" scoped></style>
