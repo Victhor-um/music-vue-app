@@ -14,12 +14,17 @@ export default defineStore('user', {
     async register(values) {
       const userCred = await auth.createUserWithEmailAndPassword(values.email, values.password)
 
-      await usersCollection.doc(userCred.user.uid).set({
-        name: values.name,
-        email: values.email,
-        age: values.age,
-        country: values.country
-      })
+      await usersCollection
+        .doc(userCred.user.uid)
+        .set({
+          name: values.name,
+          email: values.email,
+          age: values.age,
+          country: values.country
+        })
+        .then((userCred) => {
+          auth.signInWithEmailAndPassword(userCred.email, userCred.password)
+        })
 
       await userCred.user.updateProfile({
         displayName: values.name
