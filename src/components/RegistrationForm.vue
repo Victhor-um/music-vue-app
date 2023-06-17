@@ -140,8 +140,13 @@ async function register(values) {
   try {
     await userStore.register(values)
   } catch (error) {
-    regAlertVariant.value = 'bg-red-500'
-    regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
+    if (error.code === 'auth/email-already-in-use') {
+      regAlertVariant.value = 'bg-red-500'
+      regAlertMsg.value = error.message
+    } else {
+      regAlertVariant.value = 'bg-red-500'
+      regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
+    }
     return
   } finally {
     regInSubmission.value = false

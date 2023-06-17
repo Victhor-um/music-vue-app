@@ -67,12 +67,18 @@ async function login(values) {
   } catch (error) {
     loginInSubmission.value = false
     loginAlertVariant.value = 'bg-red-500'
-    loginAlertMsg.value = 'Invalid login details. '
+    loginAlertMsg.value = error.message
     return
   }
+
   loginAlertVariant.value = 'bg-green-500'
   loginAlertMsg.value = 'Success! You are now logged in. '
-  modalStore.toggleIsOpen()
+  setTimeout(() => {
+    modalStore.toggleIsOpen()
+    loginShowAlert.value = false
+    loginAlertVariant.value = 'bg-blue-500'
+    loginAlertMsg.value = 'Please wait! We are logged you in. '
+  }, 0)
 }
 </script>
 
