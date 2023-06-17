@@ -41,6 +41,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import useUserStore from '@/stores/user'
+import useModalStore from '@/stores/modal'
+
+const modalStore = useModalStore()
+const userStore = useUserStore()
 
 const loginInSubmission = ref(false)
 const loginShowAlert = ref(false)
@@ -57,10 +62,17 @@ const loginSchema = {
 async function login(values) {
   loginInSubmission.value = true
   loginShowAlert.value = true
-
-  console.log(values)
+  try {
+    await userStore.authenticate(values)
+  } catch (error) {
+    loginInSubmission.value = false
+    loginAlertVariant.value = 'bg-red-500'
+    loginAlertMsg.value = 'Invalid login details. '
+    return
+  }
   loginAlertVariant.value = 'bg-green-500'
   loginAlertMsg.value = 'Success! You are now logged in. '
+  modalStore.toggleIsOpen()
 }
 </script>
 

@@ -109,7 +109,9 @@
 import { ref } from 'vue'
 import { ErrorMessage } from 'vee-validate'
 import useUserStore from '@/stores/user'
+import useModalStore from '@/stores/modal'
 
+const modalStore = useModalStore()
 const userStore = useUserStore()
 
 const schema = {
@@ -134,10 +136,9 @@ const regAlertMsg = ref('Please wait! Your account is being created.')
 async function register(values) {
   regShowAlert.value = true
   regInSubmission.value = true
-  console.log(regShowAlert.value)
 
   try {
-    userStore.register(values)
+    await userStore.register(values)
   } catch (error) {
     regAlertVariant.value = 'bg-red-500'
     regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
@@ -148,6 +149,9 @@ async function register(values) {
 
   regAlertVariant.value = 'bg-green-500'
   regAlertMsg.value = 'Success! Your account has been created.'
+  setTimeout(() => {
+    modalStore.toggleIsOpen()
+  }, 150)
 }
 </script>
 
