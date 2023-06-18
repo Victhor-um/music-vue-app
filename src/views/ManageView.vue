@@ -135,7 +135,21 @@
     </div>
   </section>
 </template>
+<script>
+import useUserStore from '@/stores/user'
+
+const userStore = useUserStore()
+
+export default {
+  beforeRouteEnter(to, from, next) {
+    if (userStore.isUserLoggedIn) {
+      next()
+    } else {
+      next({ name: 'home' })
+    }
+  }
+}
+</script>
 
 <script setup></script>
-
 <style lang="scss" scoped></style>

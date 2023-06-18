@@ -76,6 +76,7 @@ async function login(values) {
   setTimeout(() => {
     modalStore.toggleIsOpen()
     loginShowAlert.value = false
+    loginInSubmission.value = false
     loginAlertVariant.value = 'bg-blue-500'
     loginAlertMsg.value = 'Please wait! We are logged you in. '
   }, 0)

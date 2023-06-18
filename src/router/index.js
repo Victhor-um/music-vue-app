@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import useUserStore from '@/stores/user'
 
 const routes = [
   {
@@ -16,15 +17,46 @@ const routes = [
     component: () => import('@/views/AboutView.vue')
   },
   {
-    path: '/manage',
+    path: '/manage-music',
     name: 'manage',
-    component: () => import('@/views/ManageView.vue')
+    alias: '/manage',
+    component: () => import('@/views/ManageView.vue'),
+    // beforeEnter: () => {
+    meta: {
+      requiresAuth: true
+    }
+    // }
+  },
+  // {
+  //   path: '/manage',
+  //   redirect: { name: 'manage' }
+  // },
+  {
+    path: '/:catchAll(.*)*',
+    redirect: { name: 'home' }
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  linkExactActiveClass: 'text-yellow-500'
+})
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.requiresAuth) {
+    next()
+    return
+  }
+
+  const userStore = useUserStore()
+
+  if (userStore.isUserLoggedIn) {
+    next()
+    return
+  } else {
+    next({ name: 'home' })
+  }
 })
 
 export default router
