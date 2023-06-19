@@ -8,36 +8,7 @@
             <span class="card-title">Upload</span>
             <i class="fas fa-upload float-right text-green-400 text-2xl"></i>
           </div>
-          <div class="p-6">
-            <!-- Upload Dropbox -->
-            <div
-              class="w-full px-10 py-20 rounded text-center cursor-pointer border border-dashed border-gray-400 text-gray-400 transition duration-500 hover:text-white hover:bg-green-400 hover:border-green-400 hover:border-solid"
-            >
-              <h5>Drop your files here</h5>
-            </div>
-            <hr class="my-6" />
-            <!-- Progess Bars -->
-            <div class="mb-4">
-              <!-- File Name -->
-              <div class="font-bold text-sm">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <!-- Inner Progress Bar -->
-                <div class="transition-all progress-bar bg-blue-400" style="width: 75%"></div>
-              </div>
-            </div>
-            <div class="mb-4">
-              <div class="font-bold text-sm">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <div class="transition-all progress-bar bg-blue-400" style="width: 35%"></div>
-              </div>
-            </div>
-            <div class="mb-4">
-              <div class="font-bold text-sm">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <div class="transition-all progress-bar bg-blue-400" style="width: 55%"></div>
-              </div>
-            </div>
-          </div>
+          <upload-file />
         </div>
       </div>
       <div class="col-span-2">
@@ -151,5 +122,7 @@ export default {
 }
 </script>
 
-<script setup></script>
+<script setup>
+import UploadFile from '@/components/UploadFile.vue'
+</script>
 <style lang="scss" scoped></style>
