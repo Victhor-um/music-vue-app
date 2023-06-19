@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { storage, auth, songsCollection } from '@/includes/firebase'
 
 const isDragOver = ref(false)
@@ -46,7 +46,6 @@ function upload($event) {
   const files = $event.dataTransfer ? [...$event.dataTransfer.files] : [...$event.target.files]
 
   files.forEach((file) => {
-    console.log(file)
     if (file.type !== 'audio/mpeg') {
       return
     }
@@ -98,6 +97,12 @@ function upload($event) {
     )
   })
 }
+
+onBeforeUnmount(() => {
+  uploads.value.forEach((upload) => {
+    upload.task.cancel()
+  })
+})
 </script>
 
 <style lang="scss" scoped></style>
