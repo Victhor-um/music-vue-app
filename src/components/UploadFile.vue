@@ -1,4 +1,10 @@
 <template>
+  <div class="bg-white rounded border border-gray-200 relative flex flex-col">
+    <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+      <span class="card-title">Upload</span>
+      <i class="fas fa-upload float-right text-green-400 text-2xl"></i>
+    </div>
+  </div>
   <div class="p-6">
     <!-- Upload Dropbox -->
     <div
@@ -37,6 +43,13 @@
 <script setup>
 import { ref, onBeforeUnmount } from 'vue'
 import { storage, auth, songsCollection } from '@/includes/firebase'
+
+const props = defineProps({
+  addSong: {
+    type: Function,
+    required: true
+  }
+})
 
 const isDragOver = ref(false)
 const uploads = ref([])
@@ -88,8 +101,13 @@ function upload($event) {
           genre: '',
           commentCount: 0
         }
+
         song.url = await task.snapshot.ref.getDownloadURL()
-        await songsCollection.add(song)
+        const songRef = await songsCollection.add(song)
+        const songSnapshot = await songRef.get()
+
+        props.addSong(songSnapshot)
+
         uploads.value[uploadIndex].variant = 'bg-green-400'
         uploads.value[uploadIndex].icon = 'fas fa-check'
         uploads.value[uploadIndex].textClass = 'text-green-400'

@@ -2,7 +2,10 @@
   <div class="border border-gray-200 p-3 mb-4 rounded">
     <div v-show="!showForm">
       <h4 class="inline-block text-2xl font-bold">{{ song.modifiedName }}</h4>
-      <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right">
+      <button
+        class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
+        @click.prevent="deleteSong(song)"
+      >
         <i class="fa fa-times"></i>
       </button>
       <button
@@ -59,7 +62,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { songsCollection } from '@/includes/firebase'
+import { songsCollection, storage } from '@/includes/firebase'
 
 const props = defineProps({
   song: {
@@ -73,6 +76,10 @@ const props = defineProps({
   updateSong: {
     type: Function,
     required: true
+  },
+  removeSong: {
+    type: Function,
+    required: true
   }
 })
 const inSubmission = ref(false)
@@ -82,6 +89,17 @@ const alertMessage = ref('Please wait! Updating song info.')
 const schema = {
   modifiedName: 'required|max:100',
   genre: 'alpha_spaces'
+}
+
+async function deleteSong(song) {
+  const storageRef = storage.ref()
+  const songRef = storageRef.child(`songs/${song.originalName}`)
+
+  await songRef.delete()
+
+  await songsCollection.doc(song.docID).delete()
+
+  props.removeSong(props.index)
 }
 async function edit(values) {
   inSubmission.value = true
