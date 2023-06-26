@@ -20,6 +20,7 @@
               :song="song"
               :index="index"
               :removeSong="removeSong"
+              :updateUnsavedFlag="updateUnsavedFlag"
             />
           </div>
         </div>
@@ -29,6 +30,7 @@
 </template>
 <script>
 import useUserStore from '@/stores/user'
+import { onBeforeRouteLeave } from 'vue-router'
 
 const userStore = useUserStore()
 
@@ -50,6 +52,7 @@ import CompositionItem from '@/components/CompositionItem.vue'
 import { songsCollection, auth } from '@/includes/firebase'
 
 const songs = ref([])
+const unsavedFlag = ref(false)
 
 async function created() {
   const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
@@ -67,9 +70,20 @@ function updateSong(i, values) {
   songs.value[i].modifiedName = values.modifiedName
   songs.value[i].genre = values.genre
 }
+function updateUnsavedFlag(value) {
+  unsavedFlag.value = value
+}
 function removeSong(index) {
   songs.value.splice(index, 1)
 }
 created()
+onBeforeRouteLeave((to, from, next) => {
+  if (unsavedFlag.value === false) {
+    next()
+  } else {
+    const leave = confirm('You have unsaved changes. Are you sure you want to leave?')
+    next(leave)
+  }
+})
 </script>
 <style lang="scss" scoped></style>
