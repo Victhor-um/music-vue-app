@@ -34,6 +34,11 @@ const routes = [
   {
     path: '/:catchAll(.*)*',
     redirect: { name: 'home' }
+  },
+  {
+    name: 'song',
+    path: '/song/:id',
+    component: () => import('@/views/SongView.vue')
   }
 ]
 
