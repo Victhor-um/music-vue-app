@@ -29,15 +29,30 @@
         <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
       </div>
       <div class="p-6">
-        <form>
-          <textarea
+        <div
+          class="text-white text-center font-bold p-4 mb-4"
+          v-if="commentShowAlert"
+          :class="commentAlertVariant"
+        >
+          {{ commentAlertMessage }}
+        </div>
+        <vee-form :validation-schema="schema" @submit="addComment">
+          <vee-field
+            as="textarea"
+            name="comment"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
             placeholder="Your comment here..."
-          ></textarea>
-          <button type="submit" class="py-1.5 px-3 rounded text-white bg-green-600 block">
+            v-if="userStore.isUserLoggedIn"
+          ></vee-field>
+          <ErrorMessage class="text-red-600" name="comment" />
+          <button
+            type="submit"
+            class="py-1.5 px-3 rounded text-white bg-green-600 block"
+            :disabled="commentInSubmission"
+          >
             Submit
           </button>
-        </form>
+        </vee-form>
         <!-- Sort Comments -->
         <select
           class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -50,89 +65,46 @@
   </section>
   <!-- Comments -->
   <ul class="container mx-auto">
-    <li class="p-6 bg-gray-50 border border-gray-200">
+    <li
+      v-for="comment in comments"
+      :key="comment.docID"
+      class="p-6 bg-gray-50 border border-gray-200"
+    >
       <!-- Comment Author -->
       <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
+        <div class="font-bold">{{ comment.name }}</div>
+        <time>{{ comment.datePosted }}</time>
       </div>
 
       <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
-      </p>
-    </li>
-    <li class="p-6 bg-gray-50 border border-gray-200">
-      <!-- Comment Author -->
-      <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
-      </div>
-
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
-      </p>
-    </li>
-    <li class="p-6 bg-gray-50 border border-gray-200">
-      <!-- Comment Author -->
-      <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
-      </div>
-
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
-      </p>
-    </li>
-    <li class="p-6 bg-gray-50 border border-gray-200">
-      <!-- Comment Author -->
-      <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
-      </div>
-
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
-      </p>
-    </li>
-    <li class="p-6 bg-gray-50 border border-gray-200">
-      <!-- Comment Author -->
-      <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
-      </div>
-
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
-      </p>
-    </li>
-    <li class="p-6 bg-gray-50 border border-gray-200">
-      <!-- Comment Author -->
-      <div class="mb-5">
-        <div class="font-bold">Elaine Dreyfuss</div>
-        <time>5 mins ago</time>
-      </div>
-
-      <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque
-        laudantium.
+        {{ comment.content }}
       </p>
     </li>
   </ul>
 </template>
 
 <script setup>
-import { songsCollection } from '@/includes/firebase'
-import { ref } from 'vue'
+import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
+import { ErrorMessage } from 'vee-validate'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import useUserStore from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
+
 const song = ref({})
+const comments = ref([])
+const sort = ref('1')
+const commentInSubmission = ref(false)
+const commentShowAlert = ref(false)
+const commentAlertVariant = ref('bg-blue-500')
+const commentAlertMessage = ref('Please wait! Your comment is being submitted')
+
+const schema = {
+  comment: 'required|min:3'
+}
 
 async function created() {
   const docSnapshot = await songsCollection.doc(route.params.id).get()
@@ -142,6 +114,53 @@ async function created() {
     return
   }
   song.value = docSnapshot.data()
+  getComments()
+}
+const sortedComments = computed(() => {
+  return comments.value.toSort((a, b) => {
+    if (sort.value === '1') {
+      return new Date(b.datePosted) - new Date(a.datePosted)
+    }
+    return new Date(a.datePosted) - new Date(b.datePosted)
+  })
+})
+async function getComments() {
+  const snapshots = await commentsCollection.where('sid', '==', route.params.id).get()
+
+  comments.value = []
+
+  snapshots.forEach((doc) => {
+    comments.value.push({
+      docID: doc.id,
+      ...doc.data()
+    })
+  })
+}
+
+async function addComment(values, { resetForm }) {
+  commentInSubmission.value = true
+  commentShowAlert.value = true
+  commentAlertVariant.value = 'bg-blue-500'
+  commentAlertMessage.value = 'Please wait! Your comment is being submitted'
+
+  const comment = {
+    content: values.comment,
+    datePosted: new Date().toString(),
+    sid: route.params.id,
+    name: auth.currentUser.displayName,
+    uid: auth.currentUser.uid
+  }
+
+  console.log(auth.currentUser)
+  await commentsCollection.add(comment)
+
+  getComments()
+
+  commentInSubmission.value = false
+  commentAlertVariant.value = 'bg-green-500'
+  commentAlertMessage.value = 'Comment added!'
+
+  resetForm()
 }
 
 created()
