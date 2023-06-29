@@ -55,6 +55,7 @@
         </vee-form>
         <!-- Sort Comments -->
         <select
+          v-model="sort"
           class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
         >
           <option value="1">Latest</option>
@@ -66,7 +67,7 @@
   <!-- Comments -->
   <ul class="container mx-auto">
     <li
-      v-for="comment in comments"
+      v-for="comment in sortedComments"
       :key="comment.docID"
       class="p-6 bg-gray-50 border border-gray-200"
     >
@@ -117,7 +118,7 @@ async function created() {
   getComments()
 }
 const sortedComments = computed(() => {
-  return comments.value.toSort((a, b) => {
+  return comments.value.toSorted((a, b) => {
     if (sort.value === '1') {
       return new Date(b.datePosted) - new Date(a.datePosted)
     }
