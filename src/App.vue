@@ -1,7 +1,11 @@
 <template>
   <app-header />
 
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="fade" mode="out-in">
+      <component :is="Component"> </component>
+    </transition>
+  </router-view>
   <player-music />
   <app-auth />
 </template>
@@ -23,4 +27,16 @@ function created() {
 onMounted(created)
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: all 0.35s linear;
+}
+.fade-leave-to {
+  transition: all 0.35s linear;
+  opacity: 0;
+}
+</style>

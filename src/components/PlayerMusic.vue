@@ -19,7 +19,10 @@
       <!-- Current Position -->
       <div class="player-currenttime">{{ seek }}</div>
       <!-- Scrub Container  -->
-      <div class="w-full h-2 rounded bg-gray-200 relative cursor-pointer">
+      <div
+        class="w-full h-2 rounded bg-gray-200 relative cursor-pointer"
+        @click.prevent="updateSeek"
+      >
         <!-- Player Ball -->
         <span
           class="absolute -top-2.5 -ml-2.5 text-gray-800 text-lg"
@@ -57,10 +60,9 @@ const playerProgress = computed(() => {
   return playerStore.playerProgress
 })
 
-const updateSeek = computed(() => {
-
-  return playerStore.updateSeek(event)
-})
+function updateSeek(event) {
+  playerStore.updateSeek(event)
+}
 </script>
 
 <style lang="scss" scoped></style>

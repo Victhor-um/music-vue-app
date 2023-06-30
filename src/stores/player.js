@@ -11,6 +11,9 @@ export default defineStore('player', {
   }),
   actions: {
     async newSong(song) {
+      if (this.sound instanceof Howl) {
+        this.sound.unload()
+      }
       this.currentSong = song
 
       this.sound = new Howl({
@@ -43,6 +46,23 @@ export default defineStore('player', {
       if (this.sound.playing()) {
         requestAnimationFrame(this.progress)
       }
+    },
+    updateSeek(event) {
+      console.log('🚀 ~ file: player.js:51 ~ updateSeek ~ event:', event)
+      if (!this.sound.playing) {
+        return
+      }
+
+      const { x, width } = event.currentTarget.getBoundingClientRect()
+      // Document = 2000, Timeline = 1000, clientX = 1000, Distance = 500
+      const clickX = event.clientX - x
+      const percentage = clickX / width
+      const seconds = this.sound.duration() * percentage
+
+      this.sound.seek(seconds)
+      this.sound.once('seek', this.progress)
+      console.log(this.sound)
+      console.log(this)
     }
   },
   getters: {
