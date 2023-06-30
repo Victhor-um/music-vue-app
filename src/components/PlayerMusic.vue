@@ -56,6 +56,11 @@ const playing = computed(() => {
 const playerProgress = computed(() => {
   return playerStore.playerProgress
 })
+
+const updateSeek = computed(() => {
+
+  return playerStore.updateSeek(event)
+})
 </script>
 
 <style lang="scss" scoped></style>
