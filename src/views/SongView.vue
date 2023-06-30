@@ -8,10 +8,14 @@
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
       <button
+        @click.prevent="newSong"
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
-        <i class="fas fa-play"></i>
+        <i
+          class="fas"
+          :class="{ 'fa-play': !playerStore.playing, 'fa-pause': playerStore.playing }"
+        ></i>
       </button>
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
@@ -25,7 +29,7 @@
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
         <!-- Comment Count -->
-        <span class="card-title">Comments (15)</span>
+        <span class="card-title">Comments ({{ song.commentCount }})</span>
         <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
       </div>
       <div class="p-6">
@@ -87,13 +91,15 @@
 <script setup>
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase'
 import { ErrorMessage } from 'vee-validate'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useUserStore from '@/stores/user'
+import usePlayerStore from '@/stores/player'
 
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const playerStore = usePlayerStore()
 
 const song = ref({})
 const comments = ref([])
@@ -106,7 +112,23 @@ const commentAlertMessage = ref('Please wait! Your comment is being submitted')
 const schema = {
   comment: 'required|min:3'
 }
+watch(sort, (newVal) => {
+  if (newVal === route.query.sort) {
+    return
+  }
+  router.push({
+    query: {
+      sort: newVal
+    }
+  })
+})
+function newSong() {
+  if (!playerStore.playing) {
+    playerStore.newSong(song.value)
+  }
 
+  playerStore.toggleAudio()
+}
 async function created() {
   const docSnapshot = await songsCollection.doc(route.params.id).get()
 
@@ -114,6 +136,10 @@ async function created() {
     router.push({ name: 'home' })
     return
   }
+  let { sort: sortQuery } = route.query
+
+  sort.value = sortQuery === '1' || sortQuery === '2' ? sortQuery : '1'
+
   song.value = docSnapshot.data()
   getComments()
 }
@@ -154,6 +180,11 @@ async function addComment(values, { resetForm }) {
 
   console.log(auth.currentUser)
   await commentsCollection.add(comment)
+
+  song.value.commentCount += 1
+  await songsCollection.doc(route.params.id).update({
+    commentCount: song.value.commentCount
+  })
 
   getComments()
 
