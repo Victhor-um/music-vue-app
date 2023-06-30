@@ -1,13 +1,17 @@
 <template>
-  <app-header />
+  <div class="relative mb-[64px]">
+    <app-header />
 
-  <router-view v-slot="{ Component }">
-    <transition name="fade" mode="out-in">
-      <component :is="Component"> </component>
-    </transition>
-  </router-view>
-  <player-music />
-  <app-auth />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component"> </component>
+      </transition>
+    </router-view>
+    <div class="fixed bottom-0 z-10">
+      <player-music />
+    </div>
+    <app-auth />
+  </div>
 </template>
 
 <script setup>

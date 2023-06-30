@@ -174,7 +174,6 @@ async function addComment(values, { resetForm }) {
     uid: auth.currentUser.uid
   }
 
-  console.log(auth.currentUser)
   await commentsCollection.add(comment)
 
   song.value.commentCount += 1

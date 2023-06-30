@@ -48,7 +48,6 @@ export default defineStore('player', {
       }
     },
     updateSeek(event) {
-      console.log('🚀 ~ file: player.js:51 ~ updateSeek ~ event:', event)
       if (!this.sound.playing) {
         return
       }
@@ -61,8 +60,6 @@ export default defineStore('player', {
 
       this.sound.seek(seconds)
       this.sound.once('seek', this.progress)
-      console.log(this.sound)
-      console.log(this)
     }
   },
   getters: {
