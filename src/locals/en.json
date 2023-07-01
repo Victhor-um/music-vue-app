@@ -66,5 +66,10 @@
     "goBack": " Go Back",
     "waitUpdatingSong": "Please wait! Updating song info.",
     "errorTryLater": "Something went wrong! Try again later."
+  },
+  "upload": {
+    "upload": "Upload",
+    "drop_files": "Drop your files here",
+    "chooseFiles": "Choose files"
   }
 }
