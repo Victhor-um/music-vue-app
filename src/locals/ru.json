@@ -1,0 +1,34 @@
+{
+  "home": {
+    "listen": "Слушайте Великую Музыку!",
+    "songs": "Песни"
+  },
+  "song": {
+    "comment_count": "Нет комментариев | \n1 комментарий |{count} комментариев"
+  },
+  "register": {
+    "tos": "Условия использования",
+    "accept:": "Я принимаю Music's {0}",
+    "accept": "Я принимаю Music's {0}"
+  },
+  "header": {
+    "login-register": "Войти / Зарегистрироваться",
+    "about": "О нас",
+    "logout": "Выйти",
+    "manage": "Кабинет"
+  },
+  "login": {
+    "email": "электронная почта",
+    "password": "пароль",
+    "emailPlaceholder": "Введите адрес электронной почты",
+    "successMessage": "Успех! \nВы вошли в систему.",
+    "waitMessage": "Пожалуйста, подождите! \nМы регестрируем профиль.",
+    "submit": "Войти",
+    "passwordPlaceholder": "Пароль"
+  },
+  "appAuth": {
+    "your_account": "Ваш Профиль",
+    "login": "Авторизоваться",
+    "register": "Регистрация"
+  }
+}

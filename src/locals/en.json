@@ -1,0 +1,33 @@
+{
+  "home": {
+    "listen": "Listen to Great Music!",
+    "songs": "Songs"
+  },
+  "header": {
+    "about": "About",
+    "manage": "Manage",
+    "logout": "Logout",
+    "login-register": "Login / Register"
+  },
+  "song": {
+    "comment_count": "No comments | 1 comment |{count} comments"
+  },
+  "login": {
+    "successMessage": "Success! You are now logged in. ",
+    "waitMessage": "Please wait! We are logged you in. ",
+    "email": "email",
+    "password": "password",
+    "emailPlaceholder": "Enter Email",
+    "passwordPlaceholder": "Password",
+    "submit": "Submit"
+  },
+  "register": {
+    "accept": "I accept Music's {0}",
+    "tos": "Terms of Service"
+  },
+  "appAuth": {
+    "your_account": "Your Account",
+    "login": "Login",
+    "register": "Register"
+  }
+}
