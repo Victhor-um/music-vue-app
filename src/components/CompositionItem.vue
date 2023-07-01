@@ -26,7 +26,7 @@
             name="modifiedName"
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-            placeholder="Enter Song Title"
+            :placeholder="$t('composition.songTitlePlaceholder')"
             @input="updateUnsavedFlag(true)"
           />
           <ErrorMessage class="text-red-600" name="songTitle" />
@@ -37,7 +37,7 @@
             name="genre"
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-            placeholder="Enter Genre"
+            :placeholder="$t('composition.genrePlaceholder')"
             @input="updateUnsavedFlag(true)"
           />
           <ErrorMessage class="text-red-600" name="genre" />
@@ -47,7 +47,7 @@
           class="py-1.5 px-3 rounded text-white bg-green-600"
           :disabled="inSubmission"
         >
-          Submit
+          {{ $t('composition.submit') }}
         </button>
         <button
           type="button"
@@ -55,7 +55,7 @@
           :disabled="inSubmission"
           @click.prevent="showForm = false"
         >
-          Go Back
+          {{ $t('composition.goBack') }}
         </button>
       </vee-form>
     </div>
@@ -65,7 +65,7 @@
 <script setup>
 import { ref } from 'vue'
 import { songsCollection, storage } from '@/includes/firebase'
-
+import { useI18n } from 'vue-i18n'
 const props = defineProps({
   song: {
     type: Object,
@@ -87,10 +87,11 @@ const props = defineProps({
     type: Function
   }
 })
+const { t } = useI18n()
 const inSubmission = ref(false)
 const showAlert = ref(false)
 const alertVariant = ref('bg-blue-500')
-const alertMessage = ref('Please wait! Updating song info.')
+const alertMessage = ref(t('composition.waitUpdatingSong'))
 const schema = {
   modifiedName: 'required|max:100',
   genre: 'alpha_spaces'
@@ -110,7 +111,7 @@ async function edit(values) {
   inSubmission.value = true
   showAlert.value = true
   alertVariant.value = 'bg-blue-500'
-  alertMessage.value = 'Please wait! Updating song info.'
+  alertMessage.value = t('composition.waitUpdatingSong')
 
   try {
     await songsCollection.doc(props.song.docID).update(values)
@@ -118,7 +119,7 @@ async function edit(values) {
     inSubmission.value = false
     showAlert.value = true
     alertVariant.value = 'bg-red-500'
-    alertMessage.value = 'Something went wrong! Try again later.'
+    alertMessage.value = t('composition.errorTryLater')
     return
   }
   props.updateSong(props.index, values)

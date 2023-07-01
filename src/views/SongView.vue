@@ -46,7 +46,7 @@
               as="textarea"
               name="comment"
               class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
-              placeholder="Your comment here..."
+              :placeholder="$t('song.commentPlaceholder')"
               v-if="userStore.isUserLoggedIn"
             ></vee-field>
             <ErrorMessage class="text-red-600" name="comment" />
@@ -55,7 +55,7 @@
               class="py-1.5 px-3 rounded text-white bg-green-600 block"
               :disabled="commentInSubmission"
             >
-              Submit
+              {{ $t('song.submit') }}
             </button>
           </vee-form>
           <!-- Sort Comments -->
@@ -63,8 +63,8 @@
             v-model="sort"
             class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
           >
-            <option value="1">Latest</option>
-            <option value="2">Oldest</option>
+            <option value="1">{{ $t('song.latest') }}</option>
+            <option value="2">{{ $t('song.oldest') }}</option>
           </select>
         </div>
       </div>
@@ -96,7 +96,9 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useUserStore from '@/stores/user'
 import usePlayerStore from '@/stores/player'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
@@ -108,7 +110,7 @@ const sort = ref('1')
 const commentInSubmission = ref(false)
 const commentShowAlert = ref(false)
 const commentAlertVariant = ref('bg-blue-500')
-const commentAlertMessage = ref('Please wait! Your comment is being submitted')
+const commentAlertMessage = ref(t('login.commentSubmitted'))
 
 const schema = {
   comment: 'required|min:3'
@@ -167,7 +169,7 @@ async function addComment(values, { resetForm }) {
   commentInSubmission.value = true
   commentShowAlert.value = true
   commentAlertVariant.value = 'bg-blue-500'
-  commentAlertMessage.value = 'Please wait! Your comment is being submitted'
+  commentAlertMessage.value = t('login.commentSubmitted')
 
   const comment = {
     content: values.comment,
@@ -188,7 +190,7 @@ async function addComment(values, { resetForm }) {
 
   commentInSubmission.value = false
   commentAlertVariant.value = 'bg-green-500'
-  commentAlertMessage.value = 'Comment added!'
+  commentAlertMessage.value = t('login.commentAdd')
 
   resetForm()
 }

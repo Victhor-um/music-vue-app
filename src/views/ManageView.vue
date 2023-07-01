@@ -8,7 +8,7 @@
       <div class="col-span-2">
         <div class="bg-white rounded border border-gray-200 relative flex flex-col">
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-            <span class="card-title">My Songs</span>
+            <span class="card-title">{{ $t('manage.my_songs') }}</span>
             <i class="fa fa-compact-disc float-right text-green-400 text-2xl"></i>
           </div>
           <div class="p-6">
@@ -50,9 +50,11 @@ import { ref } from 'vue'
 import UploadFile from '@/components/UploadFile.vue'
 import CompositionItem from '@/components/CompositionItem.vue'
 import { songsCollection, auth } from '@/includes/firebase'
+import { useI18n } from 'vue-i18n'
 
 const songs = ref([])
 const unsavedFlag = ref(false)
+const { t } = useI18n()
 
 async function created() {
   const snapshot = await songsCollection.where('uid', '==', auth.currentUser.uid).get()
@@ -81,7 +83,7 @@ onBeforeRouteLeave((to, from, next) => {
   if (unsavedFlag.value === false) {
     next()
   } else {
-    const leave = confirm('You have unsaved changes. Are you sure you want to leave?')
+    const leave = confirm(t('manage.confirmMessage'))
     next(leave)
   }
 })

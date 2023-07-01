@@ -4,12 +4,34 @@
     "songs": "Песни"
   },
   "song": {
-    "comment_count": "Нет комментариев | \n1 комментарий |{count} комментариев"
+    "comment_count": "Нет комментариев | \n1 комментарий |{count} комментариев",
+    "latest": "Последний",
+    "submit": "Отправить",
+    "commentPlaceholder": "Ваш комментарий здесь...",
+    "oldest": "Самый старый"
   },
   "register": {
     "tos": "Условия использования",
     "accept:": "Я принимаю Music's {0}",
-    "accept": "Я принимаю Music's {0}"
+    "accept": "Я принимаю Music's {0}",
+    "name": "Имя",
+    "namePlaceholder": "Введите имя",
+    "email": "Электронная почта",
+    "Antarctica": "Антарктида",
+    "Germany": "Германия",
+    "Mexico": "Мексика",
+    "USA": "США",
+    "age": "Возраст",
+    "confirmPasswordPlaceholder": "Подтвердите пароль",
+    "country": "Страна",
+    "emailPlaceholder": "Введите электронную почту",
+    "password": "Пароль",
+    "errorMessage": "Произошла непредвиденная ошибка. \nПожалуйста, повторите попытку позже.",
+    "passwordPlaceholder": "Пароль",
+    "password_confirm": "Подтвердите пароль",
+    "waitMessage": "Пожалуйста, подождите! \nВаша учетная запись создается.",
+    "successMessage": "Успех! \nВаш аккаунт был создан.",
+    "submit": "Зарегистрироваться"
   },
   "header": {
     "login-register": "Войти / Зарегистрироваться",
@@ -22,13 +44,27 @@
     "password": "пароль",
     "emailPlaceholder": "Введите адрес электронной почты",
     "successMessage": "Успех! \nВы вошли в систему.",
-    "waitMessage": "Пожалуйста, подождите! \nМы регестрируем профиль.",
+    "waitMessage": "Пожалуйста, подождите! \nМы регистрируем профиль.",
     "submit": "Войти",
-    "passwordPlaceholder": "Пароль"
+    "passwordPlaceholder": "Пароль",
+    "commentAdd": "Комментарий добавлен!",
+    "commentSubmitted": "Пожалуйста, подождите! \nВаш комментарий отправляется"
   },
   "appAuth": {
     "your_account": "Ваш Профиль",
     "login": "Авторизоваться",
     "register": "Регистрация"
+  },
+  "composition": {
+    "errorTryLater": "Что-то пошло не так! \nПопробуйте позже.",
+    "genrePlaceholder": "Введите жанр",
+    "goBack": "Назад",
+    "songTitlePlaceholder": "Введите название песни",
+    "submit": "Сохранить",
+    "waitUpdatingSong": "Пожалуйста, подождите! \nОбновление информации о песне."
+  },
+  "manage": {
+    "confirmMessage": "У вас есть несохраненные изменения. \nВы уверены, что хотите выйти?",
+    "my_songs": "Мои песни"
   }
 }

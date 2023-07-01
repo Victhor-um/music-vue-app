@@ -9,29 +9,29 @@
   <vee-form :validation-schema="schema" @submit="register" :initial-values="userData">
     <!-- Name -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Name</label>
+      <label class="inline-block mb-2">{{ $t('register.name') }}</label>
       <vee-field
         name="name"
         type="text"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Enter Name"
+        :placeholder="$t('register.namePlaceholder')"
       />
       <ErrorMessage class="text-red-600" name="name" />
     </div>
     <!-- Email -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Email</label>
+      <label class="inline-block mb-2">{{ $t('register.email') }}</label>
       <vee-field
         name="email"
         type="email"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Enter Email"
+        :placeholder="$t('register.emailPlaceholder')"
       />
       <ErrorMessage class="text-red-600" name="email" />
     </div>
     <!-- Age -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Age</label>
+      <label class="inline-block mb-2">{{ $t('register.age') }}</label>
       <vee-field
         name="age"
         type="number"
@@ -43,12 +43,12 @@
     </div>
     <!-- Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Password</label>
+      <label class="inline-block mb-2">{{ $t('register.password') }}</label>
       <vee-field name="password" :bails="false" v-slot="{ field, errors }">
         <input
           type="password"
           class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-          placeholder="Password"
+          :placeholder="$t('login.passwordPlaceholder')"
           v-bind="field"
         />
         <div class="text-red-600" v-for="error in errors" :key="error">
@@ -58,27 +58,27 @@
     </div>
     <!-- Confirm Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Confirm Password</label>
+      <label class="inline-block mb-2">{{ $t('register.password_confirm') }}</label>
       <vee-field
         name="confirm_password"
         type="password"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Confirm Password"
+        :placeholder="$t('register.confirmPasswordPlaceholder')"
       />
       <ErrorMessage class="text-red-600" name="confirm_password" />
     </div>
     <!-- Country -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Country</label>
+      <label class="inline-block mb-2">{{ $t('register.country') }}</label>
       <vee-field
         as="select"
         name="country"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
       >
-        <option value="USA">USA</option>
-        <option value="Mexico">Mexico</option>
-        <option value="Germany">Germany</option>
-        <option value="Antarctica">Antarctica</option>
+        <option value="USA">{{ $t('register.USA') }}</option>
+        <option value="Mexico">{{ $t('register.Mexico') }}</option>
+        <option value="Germany">{{ $t('register.Germany') }}</option>
+        <option value="Antarctica">{{ $t('register.Antarctica') }}</option>
       </vee-field>
       <ErrorMessage class="text-red-600" name="country" />
     </div>
@@ -102,7 +102,7 @@
       class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
       :disabled="regInSubmission"
     >
-      Submit
+      {{ $t('register.submit') }}
     </button>
   </vee-form>
 </template>
@@ -112,10 +112,12 @@ import { ref } from 'vue'
 import { ErrorMessage } from 'vee-validate'
 import useUserStore from '@/stores/user'
 import useModalStore from '@/stores/modal'
+import { useI18n } from 'vue-i18n'
 
 const modalStore = useModalStore()
 const userStore = useUserStore()
 
+const { t } = useI18n()
 const schema = {
   name: 'required|min:3|max:100|alpha_spaces',
   email: 'required|min:3|max:100|email',
@@ -133,7 +135,7 @@ const userData = {
 const regInSubmission = ref(false)
 const regShowAlert = ref(false)
 const regAlertVariant = ref('bg-blue-500')
-const regAlertMsg = ref('Please wait! Your account is being created.')
+const regAlertMsg = ref(t('register.waitMessage'))
 
 async function register(values) {
   regShowAlert.value = true
@@ -147,7 +149,7 @@ async function register(values) {
       regAlertMsg.value = error.message
     } else {
       regAlertVariant.value = 'bg-red-500'
-      regAlertMsg.value = 'An unexpected error occurred. PLease try again later.'
+      regAlertMsg.value = t('register.errorMessage')
     }
     return
   } finally {
@@ -155,7 +157,7 @@ async function register(values) {
   }
 
   regAlertVariant.value = 'bg-green-500'
-  regAlertMsg.value = 'Success! Your account has been created.'
+  regAlertMsg.value = t('register.successMessage')
   setTimeout(() => {
     modalStore.toggleIsOpen()
   }, 150)

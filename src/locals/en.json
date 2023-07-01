@@ -10,7 +10,11 @@
     "login-register": "Login / Register"
   },
   "song": {
-    "comment_count": "No comments | 1 comment |{count} comments"
+    "comment_count": "No comments | 1 comment |{count} comments",
+    "commentPlaceholder": "Your comment here...",
+    "submit": "Submit",
+    "latest": "Latest",
+    "oldest": "Oldest"
   },
   "login": {
     "successMessage": "Success! You are now logged in. ",
@@ -19,15 +23,48 @@
     "password": "password",
     "emailPlaceholder": "Enter Email",
     "passwordPlaceholder": "Password",
-    "submit": "Submit"
+    "submit": "Submit",
+    "commentSubmitted": "Please wait! Your comment is being submitted",
+    "commentAdd": "Comment added!"
   },
   "register": {
+    "name": "Name",
+    "namePlaceholder": "Enter Name",
+    "email": "Email",
+    "emailPlaceholder": "Enter Email",
+    "age": "Age",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "password_confirm": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "country": "Country",
+    "USA": "USA",
+    "Mexico": "Mexico",
+    "Germany": "Germany",
+    "Antarctica": "Antarctica",
+    "submit": "Submit",
+    "waitMessage": "Please wait! Your account is being created.",
+    "errorMessage": "An unexpected error occurred. PLease try again later.",
+    "successMessage": "Success! Your account has been created.",
     "accept": "I accept Music's {0}",
-    "tos": "Terms of Service"
+    "tos": "Terms of Service",
+    "accept:": "I accept Music's {0}"
   },
   "appAuth": {
     "your_account": "Your Account",
     "login": "Login",
     "register": "Register"
+  },
+  "manage": {
+    "my_songs": "My songs",
+    "confirmMessage": "You have unsaved changes. Are you sure you want to leave?"
+  },
+  "composition": {
+    "songTitlePlaceholder": "Enter Song Title",
+    "genrePlaceholder": "Enter Genre",
+    "submit": "Submit",
+    "goBack": " Go Back",
+    "waitUpdatingSong": "Please wait! Updating song info.",
+    "errorTryLater": "Something went wrong! Try again later."
   }
 }
