@@ -5,7 +5,7 @@ import ru from '@/locals/ru.json'
 export default createI18n({
   legacy: false,
   locale: 'en',
-  fallbackLocale: 'en-US',
+  fallbackLocale: 'en',
   messages: {
     en,
     ru
@@ -15,12 +15,6 @@ export default createI18n({
       currency: {
         style: 'currency',
         currency: 'USD'
-      }
-    },
-    ja: {
-      currency: {
-        style: 'currency',
-        currency: 'JPY'
       }
     },
     ru: {
