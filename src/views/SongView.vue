@@ -125,11 +125,13 @@ watch(sort, (newVal) => {
     }
   })
 })
+
 function newSong() {
   playerStore.newSong(song.value)
 
   playerStore.toggleAudio()
 }
+
 async function created() {
   const docSnapshot = await songsCollection.doc(route.params.id).get()
 
