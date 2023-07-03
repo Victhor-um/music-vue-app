@@ -9,6 +9,7 @@
       <div class="container mx-auto flex items-center">
         <!-- Play/Pause Button -->
         <button
+          id="play-btn"
           @click.prevent="newSong"
           type="button"
           class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
@@ -147,7 +148,7 @@ async function created() {
   getComments()
 }
 const sortedComments = computed(() => {
-  return comments.value.toSorted((a, b) => {
+  return comments.value.slice().sort((a, b) => {
     if (sort.value === '1') {
       return new Date(b.datePosted) - new Date(a.datePosted)
     }
