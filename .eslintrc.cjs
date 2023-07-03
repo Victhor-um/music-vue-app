@@ -25,9 +25,11 @@ module.exports = {
     }
   ],
   env: {
-    node: true
+    node: true,
+    vitest: true
   },
   parserOptions: {
     ecmaVersion: 'latest'
-  }
+  },
+  plugins: ['vitest']
 }
